@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel='stylesheet' type='text/css' href='{% static 'css/custom.css' %}'></link>
+{% endblock %}
+{% block body %}
+            <script>
+                function new_quiz(){
+                    window.location.href = '?new_quiz=True'
+                }
+            </script>
+        {% if phase == 'initial' %}
+            
+            <div class='quiz-area'>
+                <br/>
+                <h3 class='display-4'>This quiz contains 6 simple questions.</h3>
+                <div class='d-flex justify-content-md-center'>
+                    <div class='p-2'>
+                        <button type="button" class="btn btn-primary" onclick='new_quiz()'>Start Quiz</button>
+                    </div>
+                
+                </div>
+            </div>
+        {% elif phase == 'new_quiz' %}
+        <div class='quiz-area'>
+            <br/>
+            <form method="POST" action = '/client/'>
+                {% csrf_token %}
+                <input type = 'text' name='quiz_attempt_id' value='{{quiz_attempt_id}}' style='display: none'>
+                {% for questionNumber, contentObject in quiz.items %}
+                    {% comment %} {% for key, value in contentObject %} {% endcomment %}
+                        <h3 class='display-4'>{{contentObject.question}}</h3>
+                        {% for answer in contentObject.answers%}
+                        <div class='form-check form-check-inline'>
+                            <input class="form-check-input" type="checkbox" name="{{contentObject.id}}" value="{{answer}}">
+                            <label class="form-check-label" for="{{contentObject.id}}">{{answer}}</label>   
+                        </div>
+                        {% endfor %}
+                    {% comment %} {% endfor %} {% endcomment %}
+                {% endfor %}
+                <br/>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </form>
+        </div>
+        {% elif phase == 'results' %}
+        <div class='quiz-area'>
+            <br/>
+            <h3 class='display-4'>You received a score of %{{score}}</h3>
+            <button type="button" class="btn btn-primary" onclick='new_quiz()'>Try again</button>
+        </div>
+        {% endif %}
+{% endblock %}

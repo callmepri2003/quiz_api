@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<h3>Reference</h3>
+<ul>
+    <li>
+        <ul>
+            <li>This API has 4 main endpoints</li>
+                <li><code>/api/new_quiz/</code></li>
+                <li><code>/api/submit_quiz/</code></li>
+                <li><code>/api/students_info/</code></li>
+        </ul>
+    </li>
+    <li>
+        <ul>
+            <li>The <strong>new_quiz endpoint </strong>takes the username directly from the basic auth.</li>
+                <li>For example: <code>quiz = requests.get(current_host + new_quiz_endpoint, auth=(username, password))</code></li>
+                <li>The JSON it returns is structured as follows:</li>
+                <pre>
+data = {
+    'quiz_attempt_id': new_quiz_attempt.id,
+    'quiz': {
+        'q1': SerialisedQuestionObject
+        'q2': ...
+        ...
+    }
+}
+                </pre>
+        </ul>
+    </li>
+    <li>
+        <ul>
+            <li>The <strong>submit_quiz endpoint </strong>takes JSON structured as such: </li>
+            <li>The quiz attempt id is simply passed from the initial request, submitted_answers is a dictionary
+                with the key as the QuizContent ID, and the value as the submitted answers.
+            </li>
+            <pre>
+{
+    'quiz_attempt_id': 245,
+    'submitted_answers': {
+        "64" : [1,2,3],
+        ...
+        ...
+
+    }
+}
+            </pre>
+        <li>And it returns the following JSON</li>
+{
+    'score': percentageRepresentedByInteger
+}  
+        </ul>
+
+    </li>
+    <br>
+    <li>
+        The <strong>students_info endpoint</strong> simply returns a dictionary of serialised student objects with their id as the keys.
+    </li>
+    <li>If there are any technical difficulties in viewing the project, please call or email me
+</ul>
+
+{% endblock body %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    
+    {% for student, student_info in students.items %}
+    <div class = 'student'>
+        {% for key, value in student_info.items %}
+            {% if key == 'name' %}<h4>{{value}}</h4>{% endif %}
+            {% if key == 'average_score' %}<p>Average Score: %{{value}}</p>{% endif %}
+            {% if key == 'attempted_quizzes' %}<h6>Attempted Quizzes</h6><ul>
+                {% for quiz_attempt in value %}
+                    
+                    
+                       <li>{{quiz_attempt}}</li>
+                        
+                   
+                {% endfor %} </ul>
+            {% endif %}
+        {% endfor %}
+                <hr/>
+    </div>
+
+    {% endfor %}
+{% endblock %}
